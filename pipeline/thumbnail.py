@@ -6,7 +6,7 @@ from pathlib import Path
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-from .config import get_gemini_key
+from .config import GEMINI_IMAGE_MODEL, get_gemini_key
 from .log import log
 from .retry import with_retry
 
@@ -18,12 +18,12 @@ THUMB_HEIGHT = 720
 def _generate_thumb_image(prompt: str, output_path: Path, api_key: str):
     """Generate a 16:9 thumbnail via Gemini native image generation."""
     url = (
-        "https://generativelanguage.googleapis.com/v1beta"
-        "/models/gemini-2.0-flash-exp-image-generation:generateContent"
+        f"https://generativelanguage.googleapis.com/v1beta"
+        f"/models/{GEMINI_IMAGE_MODEL}:generateContent"
     )
     body = {
         "contents": [{"parts": [{"text": f"Generate a 16:9 landscape image: {prompt}"}]}],
-        "generationConfig": {"responseModalities": ["IMAGE", "TEXT"]},
+        "generationConfig": {"responseModalities": ["TEXT", "IMAGE"]},
     }
     r = requests.post(
         url, json=body, timeout=90,

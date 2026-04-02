@@ -6,7 +6,13 @@ from pathlib import Path
 import requests
 from PIL import Image
 
-from .config import VIDEO_WIDTH, VIDEO_HEIGHT, get_gemini_key, run_cmd
+from .config import (
+    GEMINI_IMAGE_MODEL,
+    VIDEO_WIDTH,
+    VIDEO_HEIGHT,
+    get_gemini_key,
+    run_cmd,
+)
 from .log import log
 from .retry import with_retry
 
@@ -15,12 +21,12 @@ from .retry import with_retry
 def _generate_image_gemini(prompt: str, output_path: Path, api_key: str):
     """Generate image via Gemini native image generation (free tier compatible)."""
     url = (
-        "https://generativelanguage.googleapis.com/v1beta"
-        "/models/gemini-2.0-flash-exp-image-generation:generateContent"
+        f"https://generativelanguage.googleapis.com/v1beta"
+        f"/models/{GEMINI_IMAGE_MODEL}:generateContent"
     )
     body = {
         "contents": [{"parts": [{"text": f"Generate an image: {prompt}"}]}],
-        "generationConfig": {"responseModalities": ["IMAGE", "TEXT"]},
+        "generationConfig": {"responseModalities": ["TEXT", "IMAGE"]},
     }
     r = requests.post(
         url, json=body, timeout=90,

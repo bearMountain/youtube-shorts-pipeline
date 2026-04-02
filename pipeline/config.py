@@ -22,6 +22,9 @@ CONFIG_FILE = SKILL_DIR / "config.json"
 VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
 
+# Gemini native image generation (b-roll, thumbnails). Override if Google deprecates the model.
+GEMINI_IMAGE_MODEL = os.environ.get("GEMINI_IMAGE_MODEL", "gemini-2.5-flash-image")
+
 # ─────────────────────────────────────────────────────
 # Voice config — override via env or config.json
 # ─────────────────────────────────────────────────────
